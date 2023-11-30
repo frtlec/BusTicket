@@ -50,7 +50,6 @@ namespace BusTicket.Adapter.Wrappers
         }
         protected OBiletResponseWrapper<T> Success<T>(T data)
         {
-
             return new()
             {
                 Data = data,
