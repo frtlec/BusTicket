@@ -1,7 +1,14 @@
+using BusTicket.Adapter.ConfigModels;
+using BusTicket.Adapter.ExternalServices;
+using Microsoft.Extensions.Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.Configure<OBiletIntegrationSetting>(builder.Configuration.GetSection("OBiletIntegrationSetting"));
+
+builder.Services.AddScoped<IOBiletIntegration, OBiletIntegration>();
 
 var app = builder.Build();
 

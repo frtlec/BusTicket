@@ -6,4 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BusTicket.Adapter\BusTicket.Adapter.csproj" />
+  </ItemGroup>
+
 </Project>
