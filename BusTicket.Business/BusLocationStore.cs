@@ -67,7 +67,9 @@ namespace BusTicket.Business
 
             return ResponseWrapper<List<KeyValuePair<int, string>>>.Success(mapped);
         }
-
+        /// <summary>
+        /// this method shuffles the 'buslocation' list into a second list and does not bring data that matches index-wise with each other.
+        /// </summary>
         public async Task<ResponseWrapper<GetAllWithCloneResponse>> GetAllWithCloneAsync(int skip = 0, int take = 0)
         {
            

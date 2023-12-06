@@ -8,13 +8,11 @@ namespace BusTicket.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly IBusLocationStore busLocationStore;
         private readonly IBusJourneysStore busJourneysStore;
 
-        public HomeController(ILogger<HomeController> logger, IBusLocationStore busLocationStore, IBusJourneysStore busJourneysStore)
+        public HomeController(IBusLocationStore busLocationStore, IBusJourneysStore busJourneysStore)
         {
-            _logger = logger;
             this.busLocationStore = busLocationStore;
             this.busJourneysStore = busJourneysStore;
         }
@@ -63,6 +61,12 @@ namespace BusTicket.Controllers
                 return RedirectToAction("Index");
             }
             return View(result.Data);
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
     public class HomeIndexDto

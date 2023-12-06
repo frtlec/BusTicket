@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace BusTicket.Business.Dtos
 {
+   
     public class GetAllWithCloneResponse
     {
         public GetAllWithCloneResponse(IEnumerable<KeyValuePair<int,string>> OrginalList)
@@ -13,8 +14,18 @@ namespace BusTicket.Business.Dtos
             this.OriginalList = OrginalList.ToList();
             this.CloneList = MixedAndClone(OriginalList);
         }
+        /// <summary>
+        /// buslocations list
+        /// </summary>
         public List<KeyValuePair<int, string>> OriginalList { get; private set; }
+        /// <summary>
+        /// clone and mixed list
+        /// </summary>
         public List<KeyValuePair<int, string>> CloneList { get; private set; }
+
+        /// <summary>
+        /// This method shuffles the 'buslocations' list into a second list and does not bring data that matches index-wise with each other.
+        /// </summary>
         private List<KeyValuePair<int,string>> MixedAndClone(List<KeyValuePair<int, string>> originalList)
         {
             var clonedList = originalList.Select(item => item).ToList();
