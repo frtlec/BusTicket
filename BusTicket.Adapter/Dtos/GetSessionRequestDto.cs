@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace BusTicket.Adapter.Dtos
 {
-    public class GetSessionRequestDto: OBiletDto
+    public class GetSessionRequestDto
     {
         [JsonPropertyName("type")]
-        public long Type { get; set; }
+        public long Type { get; set; } = 1;
 
         [JsonPropertyName("connection")]
         public ConnectionModel Connection { get; set; }
@@ -33,9 +33,23 @@ namespace BusTicket.Adapter.Dtos
             public string IpAddress { get; set; }
 
             [JsonPropertyName("port")]
-            public long Port { get; set; }
+            public string Port { get; set; }
         }
     }
+ 
+    public class GetBusLocationsRequestDto
+    {
+        [JsonPropertyName("data")]
+        public string Data { get; set; }
 
-   
+        [JsonPropertyName("device-session")]
+        public DeviceSession DeviceSession { get; set; }
+
+        [JsonPropertyName("date")]
+        public DateTime Date { get; set; }
+
+        [JsonPropertyName("language")]
+        public string Language { get; set; }
+    }
+
 }

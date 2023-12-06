@@ -31,7 +31,38 @@ input.form-control {
   border-radius: 100%;
 }
 
+.border-radius-10px {
+  border-radius: 10px;
+}
+
 #location-trans {
   width: max-content;
   height: max-content;
+}
+
+.x-bg-light {
+  background: #cccccc;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.journeys-item {
+  background-color: red;
+}
+
+  .journeys-item:hover {
+    background-color: #0d6efda6 !important;
+    color: white !important;
+  }
+
+.journeys-item .alert-danger{
+  background:#f13e3e;
+  color:white;
+  font-weight:bold;
 }

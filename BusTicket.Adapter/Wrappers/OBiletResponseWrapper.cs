@@ -1,62 +1,77 @@
-﻿using BusTicket.Shared.Extensions;
+﻿using BusTicket.Adapter.Dtos;
+using BusTicket.Shared.Extensions;
+using System.ComponentModel.Design;
+using System.Drawing;
+using System;
 using System.Net;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.CodeAnalysis;
 
 namespace BusTicket.Adapter.Wrappers
 {
-    public class OBiletResponseWrapper<T>
+
+    /// <summary>
+    /// This wrapper class centralizes control over the responses from the OBilet API.Other operations using the OBiletIntegration class will obtain clearer results through this intermediary class.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class OBiletResponseWrapper<T> 
     {
         public bool IsSuccessful { get; set; }
         public string Message { get; set; }
-        public object Data { get; set; }
-
-        public OBiletResponseWrapper<T> Generate(bool isSuccessFul, HttpStatusCode code, string response, string errorMessage)
+        public OBiletCommonResponseDto<T> Response { get; set; }
+        /// <summary>
+        ///  The method interpreting the response would return either success or failure from that method.
+        /// </summary>
+        /// <returns>
+        /// Fail or Success
+        /// </returns>
+        public static OBiletResponseWrapper<T> Generate(bool isSuccessFul, string responseBody, string errorMessage)
         {
-            //http isteğinde hata varsa doğrudan dönüyoruz.
+            //If there's an error in the HTTP request, we return directly.
             if (isSuccessFul == false)
                 return Fail(errorMessage);
+            OBiletCommonResponseDto<T> response = null;
+            try
+            {
+                response=JsonSerializer.Deserialize<OBiletCommonResponseDto<T>>(responseBody);
+            }
+            catch (Exception ex)
+            {
 
+                throw;
+            }
 
-            T data = JsonSerializer.Deserialize<T>(response);
-            //http isteği hatalı değil ancak response bodyde hata olabilir.
-            (bool, string) hasError = CheckError<T>(data);
+            //hThe HTTP request might not be faulty, but there could be an error within the response body.
+            (bool, string) hasError = CheckError(response);
             if (hasError.Item1 == false)
             {
-                return Success(data);
+                return Success(response);
             }
             else
             {
                 return Fail(hasError.Item2);
             }
         }
-        /// <summary>
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="data"></param>
-        /// <returns></returns>
-        protected (bool, string) CheckError<T>(T obj)
+        protected static (bool, string) CheckError(OBiletCommonResponseDto<T> response)
         {
-
-            string status = obj.FindProperty<string>("status");
-            if (status.ToLower() == "success")
+            if (response.Status.ToLower() == "success")
                 return (false, string.Empty);
 
-            //burada localization işlemi yapılabilir
-            string errorMessage = obj.FindProperty<string>("user-message");
+            string errorMessage = string.IsNullOrEmpty(response.UserMessage) ? $"{response.Status}": response.UserMessage;
             return (true, errorMessage);
 
         }
-        protected OBiletResponseWrapper<T> Success<T>(T data)
+        protected static OBiletResponseWrapper<T> Success(OBiletCommonResponseDto<T> data)
         {
             return new()
             {
-                Data = data,
+                Response = data,
                 IsSuccessful = true
             };
         }
-        protected OBiletResponseWrapper<T> Fail(string errorMessage)
+        protected static OBiletResponseWrapper<T> Fail(string errorMessage)
         {
             return new()
             {
