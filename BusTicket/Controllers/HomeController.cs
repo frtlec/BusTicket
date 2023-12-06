@@ -22,7 +22,7 @@ namespace BusTicket.Controllers
             var resp = await this.busLocationStore.SearchAsync(term);
             if (resp.IsSuccessful == false)
             {
-
+                return BadRequest(resp.Message);
             }
             return Ok(resp.Data);
         }
