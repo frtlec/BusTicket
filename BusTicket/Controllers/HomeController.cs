@@ -69,9 +69,4 @@ namespace BusTicket.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
-    public class HomeIndexDto
-    {
-        public int StartLocationId { get; set; }
-        public int EndLocationId { get; set; }
-    }
 }
